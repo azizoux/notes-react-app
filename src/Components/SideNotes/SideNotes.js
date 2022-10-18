@@ -4,14 +4,28 @@ import {useSelector, useDispatch} from 'react-redux'
 import {Link} from 'react-router-dom'
 import Note from './Note/Note'
 
+
 export default function SideNotes() {
 
     const {notes} = useSelector(state => state.notesReducer)
-
     const [notesList, setNotesList] = useState(notes)
-
+    const dispatch = useDispatch()
     useEffect(() => {
-        setNotesList(notes)
+        fetch("http://127.0.0.1:8000/api/notes/", {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+        })
+        .then(response => response.json())
+        .then(data => {
+            setNotesList(data)
+            dispatch({
+                type:"SETNOTES", 
+                payload: data
+            })
+        })
+
     }, [notes])
 
     const preventForm = e => e.preventDefault()

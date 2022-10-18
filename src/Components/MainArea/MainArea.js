@@ -69,15 +69,16 @@ export default function MainArea() {
             setValidation(false);
             return;
           }
+        if (inpInfo.subtitle.length < 1) {
+            setValidation(false);
+            return;
+        }
       
           setValidation(true);
       
           dispatch({
             type: "ADDNOTE",
-            payload: {
-              ...inpInfo,
-              id: uuiv4(),
-            },
+            payload: inpInfo
           });
       
           setInpInfo({
@@ -111,7 +112,9 @@ export default function MainArea() {
           type="text"
           id="subtitle"
         />
-
+        {!validation && (
+          <span className="info-validation">Veuillez renseigner un sous-titre.</span>
+        )}
         <label htmlFor="body">Votre Texte</label>
         <textarea
           value={inpModify.toggle ? inpModify.body : inpInfo.body}
